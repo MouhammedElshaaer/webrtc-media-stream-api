@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use \Pusher\Pusher;
 
+use App\User;
+
 class HomeController extends Controller
 {
     /**
@@ -31,8 +33,12 @@ class HomeController extends Controller
         $socketId = $request->socket_id;
         $channelName = $request->channel_name;
 
-        $pusher = new Pusher('83c9614fa128f8d6027a', '21cc55200cb583256bf2', '497574', [
-            'cluster' => 'ap2',
+        $appKey = '4ababde73a87fcc2ddff';
+        $appSecret = '7558441caad0b0889c18';
+        $appId = '901368';
+
+        $pusher = new Pusher($appKey, $appSecret, $appId, [
+            'cluster' => 'eu',
             'encrypted' => true
         ]);
 
@@ -40,5 +46,12 @@ class HomeController extends Controller
         $key = $pusher->presence_auth($channelName, $socketId, auth()->id(), $presence_data);
 
         return response($key);
+    }
+
+    public function getUsers() {
+
+        $users = User::all();
+        return response()->json(['users' => $users]);
+
     }
 }

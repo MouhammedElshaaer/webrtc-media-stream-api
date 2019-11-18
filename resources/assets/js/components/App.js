@@ -4,7 +4,7 @@ import MediaHandler from '../MediaHandler';
 import Pusher from 'pusher-js';
 import Peer from 'simple-peer';
 
-const APP_KEY = '83c9614fa128f8d6027a';
+const APP_KEY = '4ababde73a87fcc2ddff';
 
 export default class App extends Component {
     constructor() {
@@ -14,6 +14,8 @@ export default class App extends Component {
             hasMedia: false,
             otherUserId: null
         };
+
+        this.getUsers();
 
         this.user = window.user;
         this.user.stream = null;
@@ -25,6 +27,15 @@ export default class App extends Component {
         this.callTo = this.callTo.bind(this);
         this.setupPusher = this.setupPusher.bind(this);
         this.startPeer = this.startPeer.bind(this);
+    }
+
+    async getUsers() {
+        
+        const response = await fetch('/users');
+        const data = response.json();
+        data.then(data => this.users = data.users);
+        // data.then(data => console.log(data.users));
+
     }
 
     componentWillMount() {
@@ -46,7 +57,7 @@ export default class App extends Component {
     setupPusher() {
         this.pusher = new Pusher(APP_KEY, {
             authEndpoint: '/pusher/auth',
-            cluster: 'ap2',
+            cluster: 'eu',
             auth: {
                 params: this.user.id,
                 headers: {
@@ -112,18 +123,37 @@ export default class App extends Component {
     }
 
     render() {
-        return (
-            <div className="App">
-                {[1,2,3,4].map((userId) => {
-                    return this.user.id !== userId ? <button key={userId} onClick={() => this.callTo(userId)}>Call {userId}</button> : null;
-                })}
 
-                <div className="video-container">
-                    <video className="my-video" ref={(ref) => {this.myVideo = ref;}}></video>
-                    <video className="user-video" ref={(ref) => {this.userVideo = ref;}}></video>
+        if (this.users) {
+            return (
+                <div className="App">
+
+                    {
+                        
+                        this.users.map((user) => {
+                            return this.user.id !== user.id ? <button key={user.id} onClick={() => this.callTo(user.id)}>Call {user.name}</button> : null;
+                        })
+                    }
+                    <div className="video-container">
+                        <video className="my-video" ref={(ref) => {this.myVideo = ref;}}></video>
+                        <video className="user-video" ref={(ref) => {this.userVideo = ref;}}></video>
+                    </div>
                 </div>
-            </div>
-        );
+            );
+
+        } else {
+
+            return (
+                <div className="App">
+                    <h2>No users</h2>
+                    <div className="video-container">
+                        <video className="my-video" ref={(ref) => {this.myVideo = ref;}}></video>
+                        <video className="user-video" ref={(ref) => {this.userVideo = ref;}}></video>
+                    </div>
+                </div>
+            );
+        }
+
     }
 }
 
