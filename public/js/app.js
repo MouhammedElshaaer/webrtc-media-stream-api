@@ -41239,16 +41239,20 @@ var App = function (_Component) {
                 return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                     'div',
                     { className: 'App' },
-                    this.users.map(function (user) {
-                        return _this6.user.id !== user.id ? __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                            'button',
-                            { key: user.id, onClick: function onClick() {
-                                    return _this6.callTo(user.id);
-                                } },
-                            'Call ',
-                            user.name
-                        ) : null;
-                    }),
+                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                        'ul',
+                        { className: 'users' },
+                        this.users.map(function (user) {
+                            return _this6.user.id !== user.id ? __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                'li',
+                                { key: user.id, onClick: function onClick() {
+                                        return _this6.callTo(user.id);
+                                    } },
+                                'Call ',
+                                user.name
+                            ) : null;
+                        })
+                    ),
                     __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                         'div',
                         { className: 'video-container' },
@@ -41265,11 +41269,6 @@ var App = function (_Component) {
                 return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                     'div',
                     { className: 'App' },
-                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                        'h2',
-                        null,
-                        'No users'
-                    ),
                     __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                         'div',
                         { className: 'video-container' },

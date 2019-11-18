@@ -128,12 +128,18 @@ export default class App extends Component {
             return (
                 <div className="App">
 
-                    {
+                    
+                    <ul className="users">
                         
-                        this.users.map((user) => {
-                            return this.user.id !== user.id ? <button key={user.id} onClick={() => this.callTo(user.id)}>Call {user.name}</button> : null;
-                        })
-                    }
+                        {
+                            this.users.map((user) => {
+                                return this.user.id !== user.id?
+                                    <li key={user.id} onClick={() => this.callTo(user.id)}>Call {user.name}</li>
+                                    :null;
+                            })
+                        }
+
+                    </ul>
                     <div className="video-container">
                         <video className="my-video" ref={(ref) => {this.myVideo = ref;}}></video>
                         <video className="user-video" ref={(ref) => {this.userVideo = ref;}}></video>
@@ -145,7 +151,6 @@ export default class App extends Component {
 
             return (
                 <div className="App">
-                    <h2>No users</h2>
                     <div className="video-container">
                         <video className="my-video" ref={(ref) => {this.myVideo = ref;}}></video>
                         <video className="user-video" ref={(ref) => {this.userVideo = ref;}}></video>
